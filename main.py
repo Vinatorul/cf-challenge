@@ -70,7 +70,11 @@ def get_data(cfdata):
         result += '<tr>'
         result += '<th scope="row">'
         handle = r['party']['members'][0]['handle']
-        result += handle + '\n'
+        contestant = Contestant.query.filter_by(handle=handle).first()
+        if contestant:
+            result += contestant.name  
+        else:
+            result += handle
         result += '</td>'
         problem_res = r['problemResults']
         total_solved = 0
