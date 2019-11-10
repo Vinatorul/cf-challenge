@@ -58,16 +58,21 @@ def get_data(cfdata):
     result = 'Информация по контесту ' + contest['name']
     if contest['phase'] == 'FINISHED':
         result += '(Завершен)'
-    result += '<table class="table">'
+    result += '<table class="table table-striped">'
+    result += '<thead class="thead-dark">'
     result += '<tr>'
     result += '<th scope="col">Участник</th>' 
     for i in range(problems_count):
         result += '<th scope="col">' + chr(i + ord("A")) + '</th>'
     result += '<th scope="col">Челлендж</th>'
     result += '</tr>'
-
+    result += '</thead><tbody>'
     for r in rows:
-        result += '<tr>'
+        percent = int(r['points'] / problems_count * 100)
+        if percent >= 80:
+            result += '<tr class="table-success">'
+        else:
+            result += '<tr>'
         result += '<th scope="row">'
         handle = r['party']['members'][0]['handle']
         contestant = Contestant.query.filter_by(handle=handle).first()
@@ -77,11 +82,9 @@ def get_data(cfdata):
             result += handle
         result += '</td>'
         problem_res = r['problemResults']
-        total_solved = 0
         for pr in problem_res:
             result += '<td>'
             if pr['points'] > 0:
-                total_solved += 1
                 result += '+'
                 if pr['rejectedAttemptCount'] > 0:
                     result += str(pr['rejectedAttemptCount'])
@@ -90,30 +93,36 @@ def get_data(cfdata):
                     result += '-' + str(pr['rejectedAttemptCount'])
             result += '</td>'
         result += '<td>'
-        if total_solved / problems_count > 0.8:
-            result += 'выполнен'
+        if percent >= 80:
+            result += 'выполнен (' + str(percent) +'%)'
         else:
-            result += 'не выполнен'
+            result += 'не выполнен (' + str(percent) +'%)'
         result += '</td>'
         result += '</tr>'
-    result += '</table>'
+    result += '</tbody></table>'
     return result
 
 def get_contestants_table():
     result = ''
-    result += '<table class="table">'
+    result += '<table class="table table-striped">'
+    result += '<thead class="thead-dark">'
     result += '<tr>'
+    result += '<th scope="col">#</th>'
     result += '<th scope="col">Участник</th>' 
     result += '<th scope="col">CF Handle</th>'
     result += '</tr>'
-    contestants = Contestant.query.all()
+    result += '</thead><tbody>'
+    contestants = Contestant.query.order_by(Contestant.name).all()
+    i = 0
     for contestant in contestants:
+        i += 1
         result += '<tr>'
+        result += '<th scope="row">' + str(i) + '</th>' 
         result += '<td>' + contestant.name + '</td>'
         result += '<td><a href="https://codeforces.com/profile/' +\
             contestant.handle + '">' + contestant.handle + '</td>'
         result += '</tr>'
-    result += '</table>'
+    result += '</tbody></table>'
     return result
 
 @app.route('/contestants', methods = ["GET", "POST"])
@@ -153,20 +162,26 @@ def contest_info(contestId):
 
 def get_contest_table():
     result = ''
-    result += '<table class="table">'
+    result += '<table class="table table-striped">'
+    result += '<thead class="thead-dark">'
     result += '<tr>'
+    result += '<th scope="col">#</th>'
     result += '<th scope="col">Результаты</th>'
     result += '<th scope="col">Результаты на CF</th>'
     result += '</tr>'
+    result += '</thead><tbody>'
     contests = Contest.query.all()
+    i = 0
     for contest in contests:
+        i += 1
         result += '<tr>'
+        result += '<th scope="row">' + str(i) + '</th>'
         result += '<td><a href="contest_info/' +\
             str(contest.id) + '">' + contest.name + '</td>'
         result += '<td>https://codeforces.com/group/U9XUJaQnsj/contest/' +\
             str(contest.id) + '</td>'
         result += '</tr>'
-    result += '</table>'
+    result += '</tbody></table>'
     return result
 
 @app.route('/', methods = ["GET", "POST"])

@@ -19,12 +19,14 @@
       </ul>
     </nav>
     <div class="container">
-      <form name="add_contestant" method="POST">
-        <input type="text" placeholder="Имя" name="name"/>
-        <input type="text" placeholder="CF handle" name="handle"/>
-        <input type="submit">
-      </form>
-      %CONTESTANTS%
+      <div class="row">
+        <form name="add_contestant" method="POST">
+          <input type="text" placeholder="Имя" name="name"/>
+          <input type="text" placeholder="CF handle" name="handle"/>
+          <input type="submit">
+        </form>
+      </div>
+      <div class="row">%CONTESTANTS%</div>
     </div>
   </body>
 </html>
