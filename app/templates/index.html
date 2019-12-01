@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 
 {%block title%}
-    <title>ACM Ivanovo</title>
+    <title>ACM Ivanovo|Главная</title>
 {%endblock%}
 
 {%block  main%}
-      2
+    <table class="table">
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>Название контеста</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {%for contest in Contests.query.all()%}
+                <tr>
+                <th scope="row"> {{ loop.index }} </th>
+                <td><a href = "/contest/{{ contest.id }}"> {{ contest.name }} </a></td>
+                </tr>
+            {%endfor%}
+            
+        </tbody>
+    </table>
 {%endblock%}
