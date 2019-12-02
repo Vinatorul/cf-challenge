@@ -1,9 +1,52 @@
 {% extends "base.html" %}
 
+
 {%block title%}
-    <title>Users</title>
+    <title>ACM Ivanovo|Участники</title>
 {%endblock%}
 
+
+{%block add_user%}
+<form name="contest" method="POST">
+    <input type="text" name="handle" placeholder="Хендл">
+    <input type="text" name="name" placeholder="Имя">
+    <input type="submit" value="Добавить участника">
+</form>
+{%endblock%}
+
+
 {%block  main%}
-      3
+<table class="table">
+    <thead>
+        <tr>
+        <th>#</th>
+        <th>Хендл</th>
+        <th>Имя</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        {%for user in users%}
+            <tr>
+            <th scope="row"> {{ loop.index }} </th>
+            <td><a href = "https://codeforces.com/profile/{{user.handle}}">{{user.handle}}</a></td>
+            <td>{{user.name}}</td>
+            </tr>
+        {%endfor%}
+
+    </tbody>
+</table>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div style="position: absolute; top: 0; right: 0;">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endwith %}
+
 {%endblock%}
