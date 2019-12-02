@@ -9,19 +9,36 @@ def index():
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():
-    
-    if request.method == "POST":
+    if request.method == 'POST':
+        handle = request.form.get('handle').capitalize()
+        name = request.form.get('name').capitalize()
 
-        handle = request.form.get('handle')
-        name = request.form.get('name')
+        all_good = True
+        if bool(Users.query.filter_by(handle=handle).first()): 
+            flash('Хендл уже используется', 'danger') 
+            all_good = False
+            
+        if bool(Users.query.filter_by(name=name).first()):
+            flash('Имя уже используется', 'danger')
+            all_good = False
 
-        new_user = Users(handle, name)
-        db.session.add(new_user)
-        db.session.commit()
+        if len(handle) < 2:
+            flash('Хендл слишком короткий', 'danger')
+            all_good = False
 
-        return redirect(url_for('users', Users = Users))
+        if len(name) < 2:
+            flash('Имя слишком короткое', 'danger')
+            all_good = False
 
-    return render_template('users.html', Users = Users)
+        if all_good:
+            new_user = Users(handle, name)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Успешно', 'success')
+
+    users = Users.query.order_by(Users.handle).all()  
+
+    return render_template('users.html', users = users)
 
 
 @app.route('/contest/')

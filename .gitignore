@@ -108,4 +108,4 @@ venv.bak/
 
 # myFiles
 secret.py
-.vscode
+.vscode/
