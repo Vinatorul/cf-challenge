@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 import os
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.abspath('cf-challange.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.abspath('cf-challenge.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -22,12 +21,9 @@ class Users(db.Model):
 
 class Contests(db.Model):
     __tablename__ = 'contests'
-    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(1000), unique = True)
 
-    def __init__(self, name):
+    def __init__(self, id, name):
+        self.id = id
         self.name = name
-
-
-
-

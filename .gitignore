@@ -109,3 +109,4 @@ venv.bak/
 # myFiles
 secret.py
 .vscode/
+cf-challenge.db

@@ -22,15 +22,22 @@
     <nav id="navbar-example2" class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="/">Еженедельный челлендж</a>
       <div class="container">
+
+          <a class="navbar-brand" href="/users">Участники</a>
+
           <div class="row">
             
             {%block add_user%}
 
             {%endblock%}
+            
+            {%block add_contest%}
+
+            {%endblock%}
 
           </div>
-          <a class="navbar-brand" href="/users">Участники</a>
-        </div>
+          
+      </div>
       
     </nav>
 

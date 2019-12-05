@@ -1,5 +1,5 @@
-from app import app, db
 from secret import secret_key
+from app import app
 import view
 
 

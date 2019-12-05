@@ -5,5 +5,58 @@
 {%endblock%}
 
 {%block  main%}
-    <p>test :)</p>
+<table class="table table-striped" cellpadding="0" cellspacing="0" >
+    <thead align="center" >
+        <tr>
+        <th>#</th>
+        <th>Хендл</th>
+        <th>Решено</th>
+        <th>Штраф</th>
+        
+
+        {%for problem in problems%}
+            <th><a href='https://codeforces.com/group/U9XUJaQnsj/contest/{{id}}/problem/{{ problem["index"] }}'>{{ problem['index'] }}</a></th>
+        {%endfor%}
+        <th>Челлендж</th>
+        </tr>
+    </thead>
+    
+    <tbody align="center">
+        {%for i in range(results|length)%}
+
+            {%if (results[i][1] / problems|length)*100 >= 80%}
+                <tr class = "table-success"  >
+            {%else%}
+                <tr>
+            {%endif%}
+
+                    <td>{{ loop.index }}</td>
+                    <td><a href = "https://codeforces.com/profile/{{ results[i][0] }}">{{ results[i][0] }}</a></td> 
+                    <td>{{ results[i][1] }}</td> 
+                    <td>{{ results[i][2] }}</td>
+                    
+                    {%for j in range(problems|length)%}
+                    <td>
+                        <p style = "color:#0a0;"> {{ results[i][3][j][0] }} </p>
+                        <p>{{ results[i][3][j][1] }}</p>
+                    </td>
+                    {%endfor%}
+                    
+                    {%if (results[i][1] / problems|length)*100 >= 80%}
+                        <td>
+                            <p> Выполнен </p> 
+                            <p>{{ ((results[i][1] / problems|length)*100) | int }}%</p>
+                        </td>
+                    {%else%}
+                        <td>
+                            <p> Не выполнен </p> 
+                            <p>{{ ((results[i][1] / problems|length)*100) | int }}%</p>
+                        </td>
+                    {%endif%}
+                </tr>        
+        {%endfor%}
+    </tbody>
+</table>
 {%endblock%}
+
+

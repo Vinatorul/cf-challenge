@@ -1,10 +1,32 @@
+from contests_parse import Parsing
 from app import *
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    count = db.session.query(Users).count()
-    return render_template('index.html', Contests = Contests, count = count)
+    if request.method == 'POST':
+        id = request.form.get('id').capitalize()
+        ex = Parsing(id)
+
+        all_good = True
+        if bool(ex.status() != 200):
+            flash('Неверный ID', 'danger') 
+            all_good = False
+
+        if bool(Contests.query.filter_by(id=id).first()): 
+            flash('Контест уже в списке', 'danger') 
+            all_good = False
+
+        if all_good:
+            new_contest = Contests(id,ex.get_name())
+            db.session.add(new_contest)
+            db.session.commit()
+            flash('Успешно', 'success')
+            ex.get_problems()
+
+    contests = Contests.query.order_by(Contests.id).all()
+
+    return render_template('index.html', Contests = contests)
 
 
 @app.route('/users', methods=['GET', 'POST'])
@@ -41,6 +63,6 @@ def users():
     return render_template('users.html', users = users)
 
 
-@app.route('/contest/')
-def contest():
-    return render_template('contest.html')
+@app.route(f'/contest/<int:id>', methods=['GET', 'POST'])
+def contest(id):
+    return render_template('contest.html', id = id, problems = Parsing(id).get_problems(), results = Parsing(id).get_solutions())
