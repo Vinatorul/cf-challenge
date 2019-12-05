@@ -7,7 +7,7 @@
 
 {%block add_contest%}
 <form name="contest" method="POST">
-    <input type="text" name="contestId" placeholder="ID контеста">
+    <input type="text" name="id" placeholder="ID контеста">
     <input type="submit" value="Добавить контест">
 </form>
 {%endblock%}
@@ -26,7 +26,7 @@
             {%for contest in Contests%}
                 <tr>
                 <th scope="row"> {{ loop.index }} </th>
-                <td><a href = "/contest/{{ contest.contestId }}"> {{ contest.name }} </a></td>
+                <td><a href = "/contest/{{ contest.id }}"> {{ contest.name }} </a></td>
                 </tr>
             {%endfor%}
             

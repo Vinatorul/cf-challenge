@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, flash, url_for
+from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 import os
 
 
@@ -22,10 +21,9 @@ class Users(db.Model):
 
 class Contests(db.Model):
     __tablename__ = 'contests'
-    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    contestId = db.Column(db.Integer, unique = True)
+    id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(1000), unique = True)
 
-    def __init__(self, contestId, name):
-        self.contestId = contestId
+    def __init__(self, id, name):
+        self.id = id
         self.name = name

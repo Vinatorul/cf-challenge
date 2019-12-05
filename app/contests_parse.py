@@ -1,21 +1,23 @@
 from secret import key, secret
 from datetime import datetime
+from random import randint
 import requests
 import hashlib
 import time
 
+
 class Parsing:
     def __init__(self, id):
-        self.rand = '123456'
+        self.rand = str(randint(10000,1000000))
         self.t = str(int(time.time()))
-        self.contestID = id
+        self.id = id
 
-        self.hashed = f'{self.rand}/contest.standings?apiKey={key}&contestId={self.contestID}&time={self.t}#{secret}' 
+        self.hashed = f'{self.rand}/contest.standings?apiKey={key}&contestId={self.id}&time={self.t}#{secret}' 
         self.hashed = self.hashed.encode('utf-8')
         self.hashed = str(hashlib.sha512(self.hashed).hexdigest())
 
-        self.ref = f'https://codeforces.com/api/contest.standings?contestId={self.contestID}&apiKey={key}&time={self.t}&apiSig={self.rand}{self.hashed}'
-        
+        self.ref = f'https://codeforces.com/api/contest.standings?contestId={self.id}&apiKey={key}&time={self.t}&apiSig={self.rand}{self.hashed}'
+
         self.response = requests.get(self.ref).json()['result']
 
     def status(self):
@@ -55,8 +57,4 @@ class Parsing:
 
             
             self.results.append([self.handle, self.points, self.penalty, self.solutions])
-        print(self.results)
         return self.results
-
-
-Parsing(261553).get_solutions()
