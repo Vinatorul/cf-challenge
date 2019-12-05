@@ -8,7 +8,7 @@ import time
 
 class Parsing:
     def __init__(self, id):
-        self.rand = str(randint(10000,1000000))
+        self.rand = str(randint(100000,1000000))
         self.t = str(int(time.time()))
         self.id = id
 
