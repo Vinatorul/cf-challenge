@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {%block title%}
-    <title>ACM Ivanovo|Контест</title>
+    <title>Контест | ACM Ivanovo</title>
 {%endblock%}
 
 {%block  main%}
-<table class="table table-striped" cellpadding="0" cellspacing="0" >
+<table class="centered table table-striped table-bordered mt-5" cellpadding="0" cellspacing="0" >
     <thead align="center" >
         <tr>
         <th>#</th>
@@ -31,7 +31,7 @@
             {%endif%}
 
                     <td>{{ loop.index }}</td>
-                    <td><a href = "https://codeforces.com/profile/{{ results[i][0] }}">{{ results[i][0] }}</a></td> 
+                    <td><a href = "../profile/{{ results[i][0] }}">{{ results[i][0] }}</a></td> 
                     <td>{{ results[i][1] }}</td> 
                     <td>{{ results[i][2] }}</td>
                     

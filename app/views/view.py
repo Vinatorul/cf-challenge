@@ -4,6 +4,7 @@ from app import *
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
     if request.method == 'POST':
         id = request.form.get('id').capitalize()
         ex = Parsing(id)
@@ -23,10 +24,13 @@ def index():
             db.session.commit()
             flash('Успешно', 'success')
             ex.get_problems()
-
+    
     contests = Contests.query.order_by(Contests.id).all()
 
-    return render_template('index.html', Contests = contests)
+    if current_user.is_authenticated:
+        return render_template('index.html', Contests = contests, handle = current_user.get_id())
+    else:
+        return render_template('index.html', Contests = contests)
 
 
 

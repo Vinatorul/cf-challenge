@@ -1,6 +1,6 @@
 from secret import secret_key
-from app import app
-from views import view, users, contests
+from app import app, db
+from views import view, users, contests, login, profile, register, logout, settings, images
 
 
 if __name__ == "__main__":

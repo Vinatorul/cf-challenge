@@ -6,8 +6,8 @@ from app import *
 @app.route('/users', methods=['GET', 'POST'])
 def users():
     if request.method == 'POST':
-        handle = request.form.get('handle').capitalize()
-        name = request.form.get('name').capitalize()
+        handle = request.form.get('handle')
+        name = request.form.get('name')
 
         all_good = True
         if bool(Users.query.filter_by(handle=handle).first()): 
@@ -27,7 +27,8 @@ def users():
             all_good = False
 
         if all_good:
-            new_user = Users(handle, name)
+            new_user = Users(handle)
+            new_user.name = name
             db.session.add(new_user)
             db.session.commit()
             flash('Успешно', 'success')

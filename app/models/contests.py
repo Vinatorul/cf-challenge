@@ -11,6 +11,6 @@ class Contests(db.Model):
 
     def serialize(self):
         return {
-            'id' : self.id,
+            'id'   : self.id,
             'name' : self.name
         }
