@@ -1,4 +1,5 @@
 from models.users import *
+import hashlib
 from app import *
 
 
@@ -30,6 +31,7 @@ def register():
                     flash('Пароли не совпадают', 'danger')
                 
                 else:
+                    password = hashlib.sha224(password.encode('utf-8')).hexdigest()
                     user.set_password(password) # Changing default password
                     db.session.add(user)
                     db.session.commit()
@@ -54,7 +56,8 @@ def register():
             
             else:
                 new_user = Users(handle)
-                new_user.set_password(password) # Changing default password
+                password = hashlib.sha224(password.encode('utf-8')).hexdigest()
+                new_user.set_password(password)
                 db.session.add(new_user)
                 db.session.commit()
                 

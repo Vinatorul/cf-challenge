@@ -2,6 +2,7 @@ from flask_login import login_required
 from werkzeug import secure_filename
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from models.users import *
+import hashlib
 from app import *
 import os
 
@@ -21,11 +22,6 @@ def settings():
         about = request.form['about']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        
-        
-
-        app.config['UPLOAD_FOLDER'] = 'static/images'
-        app.config['UPLOADED_PHOTOS_DEST'] = 'static/img'
 
         if 'new_icon' in request.files:
             new_icon = request.files['new_icon']
@@ -49,16 +45,18 @@ def settings():
         update = Users.query.filter_by(handle = current_user.handle).first()
         update.set_params(params)
 
-        if len(password) < 2:
-            flash('Пароль слишком короткий', 'danger')
-            return render_template('settings.html')
+        if password != '' or confirm_password != '':
+            if len(password) < 2:
+                flash('Пароль слишком короткий', 'danger')
+                return render_template('settings.html')
 
-        elif password != confirm_password:
-            flash('Пароли не совпадают', 'danger')
-            return render_template('settings.html')
+            elif password != confirm_password:
+                flash('Пароли не совпадают', 'danger')
+                return render_template('settings.html')
             
-        elif password != current_user.password:
-            update.set_password(password)
+            else:
+                update.set_password(hashlib.sha224(password.encode('utf-8')).hexdigest())
+                flash('Пароль обновлен', 'success')
 
 
         db.session.add(update)
