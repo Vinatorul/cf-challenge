@@ -28,7 +28,7 @@ def index():
     contests = Contests.query.order_by(Contests.id).all()
 
     if current_user.is_authenticated:
-        return render_template('index.html', Contests = contests, handle = current_user.get_id())
+        return render_template('index.html', Contests = contests, login = current_user.get_id())
     else:
         return render_template('index.html', Contests = contests)
 

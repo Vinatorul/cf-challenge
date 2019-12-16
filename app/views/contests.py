@@ -5,8 +5,11 @@ from app import *
 
 @app.route(f'/contest/<int:id>', methods=['GET', 'POST'])
 def contest(id):
-    return render_template('contest.html', 
-                            id = id, 
-                            problems = Parsing(id).get_problems(), 
-                            results = Parsing(id).get_solutions(), 
-                            group_id = group_id)
+    try:
+        return render_template('contest.html', 
+                                id = id, 
+                                problems = Parsing(id).get_problems(), 
+                                results = Parsing(id).get_solutions(), 
+                                group_id = group_id)
+    except:
+        return redirect(url_for('p404'))

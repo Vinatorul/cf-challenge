@@ -33,6 +33,7 @@ class Parsing:
             self.problems.append(self.response['problems'][i])
         return self.problems
 
+
     def get_solutions(self):
         
         self.results = []
@@ -56,5 +57,26 @@ class Parsing:
                     self.solutions[j] = [' ', ' '] 
 
             
-            self.results.append([self.handle, self.points, self.penalty, self.solutions])
+            self.results.append([self.handle, get_rating(self.handle), self.points, self.penalty, self.solutions])
         return self.results
+
+
+def get_rating(handle):
+        rand = str(randint(100000,1000000))
+        t = str(int(time.time()))
+        handle = handle
+        hashed = f'{rand}/user.rating?apiKey={key}&handle={handle}&time={t}#{secret}' 
+        hashed = hashed.encode('utf-8')
+        hashed = str(hashlib.sha512(hashed).hexdigest())
+        ref = f'https://codeforces.com/api/user.rating?handle={handle}&apiKey={key}&time={t}&apiSig={rand}{hashed}'
+        rating = requests.get(ref).json()
+        
+        try:
+            last_rating = rating['result'][len(rating['result'])-1]['newRating']
+        except:
+            if rating['status'] == 'FAILED':
+                return None
+            else:
+                last_rating = 0
+            
+        return last_rating

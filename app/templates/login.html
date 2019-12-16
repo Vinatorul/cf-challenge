@@ -9,18 +9,18 @@
     <form class="mt-5 form-signin" method="POST">
       
       
-        {%if handle%}
-        <img class="mb-4"src="{{ url_for('user_icon', handle = handle) }}" alt="" width="72" height="72">
+        {%if login%}
+        <img class="mb-4"src="{{ url_for('user_icon', login = login) }}" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Добро пожаловать. Снова.</h1>
-        <label for="inputName" class="sr-only">Хендл</label>
-        <input name = "handle" type="name" class="form-control" placeholder="Хендл" value = "{{ handle }}" required="" autofocus="">
+        <label for="inputName" class="sr-only">Логин</label>
+        <input name = "login" type="name" class="form-control" placeholder="Логин" value = "{{ login }}" required="" autofocus="">
         <label for="inputPassword" class="sr-only">Пароль</label>
         <input name = "password" type="password" class="form-control" placeholder="Пароль" required="">
         {%else%}
         <img class="mb-4" src="{{ url_for('static', filename = 'images/defaults/anon_icon.jpg') }}" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Вход</h1>
-        <label for="inputName" class="sr-only">Хендл</label>
-        <input name = "handle" type="name" class="form-control" placeholder="Хендл" value = "{{ handle }}" required="" autofocus="">
+        <label for="inputName" class="sr-only">Логин</label>
+        <input name = "login" type="name" class="form-control" placeholder="Логин" value = "{{ login }}" required="" autofocus="">
         {%endif%}
       <br>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>

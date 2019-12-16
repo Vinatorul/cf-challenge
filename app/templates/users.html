@@ -6,23 +6,12 @@
 {%endblock%}
 
 
-{%block add_user%}
-    {% if current_user.is_authenticated %}
-    <form name="contest" method="POST">
-        <input type="text" name="handle" placeholder="Хендл">
-        <input type="text" name="name" placeholder="Имя">
-        <input type="submit" value="Добавить участника">
-    </form>
-    {% endif %}
-{%endblock%}
-
-
 {%block  main%}
 <table class="centered table table-bordered mt-5">
     <thead>
         <tr>
         <th>#</th>
-        <th>Хендл</th>
+        <th>Логин</th>
         <th>Имя</th>
         </tr>
     </thead>
@@ -31,8 +20,8 @@
         {%for user in users%}
             <tr>
             <th scope="row"> {{ loop.index }} </th>
-            <td><a href = "profile/{{user.handle}}">{{user.handle.capitalize()}}</a></td>
-            <td>{{user.name.capitalize()}}</td>
+            <td><a href = "profile/{{ user.login }}" class="text-decoration-none rank{{ rank }}">{{ user.login }}</a></td>
+            <td>{{user.name}}</td>
             </tr>
         {%endfor%}
 

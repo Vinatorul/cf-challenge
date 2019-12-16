@@ -2,15 +2,48 @@
 
 {%block title%}
     {%if user_obj == ''%}
-        <title>{{ handle }} | ACM Ivanovo</title>
+        <title>{{ handleCFORCE }} | ACM Ivanovo</title>
     {%else%}
-        <title>{{ user_obj.handle }} | ACM Ivanovo</title>
+        <title>{{ user_obj.login }} | ACM Ivanovo</title>
     {%endif%}
     
 {%endblock%}
 
 {%block main%}
-   
+
+{%if user_obj == ''%}
+    {% set rank = get_rating(handleCFORCE) %}   
+{%else%}
+    {% if user_obj.handleCFORCE != '' and get_rating(user_obj.handleCFORCE) != None %}
+    {% set rank = get_rating(user_obj.handleCFORCE) %}
+        <style>           
+            .rank{{ rank }} {
+                {% if rank < 1200 %}
+                    color: grey !important;
+                {% elif rank < 1400 %}
+                    color: green !important;
+                {% elif rank < 1600 %}
+                    color: #03A89E !important;
+                {% elif rank < 1900 %}
+                    color: blue !important;
+                {% elif rank < 2200 %}
+                    color: #a0a !important;
+                {% elif rank < 2400 %}
+                    color: #FF8C00 !important;
+                {% else %}
+                    color: red !important;
+                {% endif %}
+            }
+        </style>
+    {% else %}
+        <style>
+            .rank{{ rank }} {
+                color: black !important;
+            }
+        </style>
+    {% endif %}
+{%endif%}
+
     <div class="container emp-profile">
         
                     <div class="row" mt-5>
@@ -19,7 +52,7 @@
                                 {%if user_obj == ''%}
                                     <img src="{{ url_for('static', filename = 'images/defaults/anon_icon.jpg') }}" alt="">
                                 {%else%}
-                                    <img src="{{ url_for('user_icon', handle = user_obj.handle) }}" alt="">
+                                    <img src="{{ url_for('user_icon', login = user_obj.login) }}" alt="">
                                 {%endif%}
                             </div>
                         </div>
@@ -27,17 +60,17 @@
                             <div class="profile-head" align="left">
                                         <h5>
                                             {%if user_obj == ''%}
-                                                {{ handle }}
+                                                Аноним
                                             {%else%}
-                                                {{ user_obj.handle }} ( {{ user_obj.name }} )
+                                                {{ user_obj.login }} ( {{ user_obj.name }} )
                                             {%endif%}
-                                        </h5>
+                                        </h5  >
                                         <p class="proile-rating">Статус : <span>{{ user_obj.status }}</span></p>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">О себе</a>
                                     </li>
-                                    {%if current_user.handle == user_obj.handle%}
+                                    {%if current_user.login == user_obj.login%}
                                     <li class="nav-item">
                                         <a class="nav-link " href='../settings' role="tab">Редактировать профиль</a>
                                     </li>
@@ -50,60 +83,72 @@
                                         <div class="col-md-8">
                                             <div class="tab-content profile-tab" id="myTabContent">
                                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                                            <div class="row">
-                                                                <div class="col-md-6 mt-2">
-                                                                    <label>Хендл</label>
-                                                                </div>
-                                                                <div class="col-md-6 mt-2">
-                                                                    <p>
-                                                                        {%if user_obj == ''%}
-                                                                            {{ handle }}
-                                                                        {%else%}
-                                                                            {{ user_obj.handle }}
-                                                                        {%endif%}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mt-2">
-                                                                    <label>Имя</label>
-                                                                </div>
-                                                                <div class="col-md-6 mt-2">
-                                                                    <p>{{ user_obj.name }}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mt-2">
-                                                                    <label>Codeforces</label>
-                                                                </div>
-                                                                <div class="col-md-6 mt-2">
-                                                                    <p>
-                                                                        {%if user_obj == ''%}
-                                                                            <a href='https://codeforces.com/profile/{{ handle }}'>{{ handle }}</a>
-                                                                        {%else%}
-                                                                            <a href='https://codeforces.com/profile/{{ user_obj.handle }}'>{{ user_obj.handle }}</a>
-                                                                        {%endif%}
-                                                                        
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mt-2">
-                                                                    <label>VK</label>
-                                                                </div>
-                                                                <div class="col-md-6 mt-2">
-                                                                    <p>{{ user_obj.vk_url }}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6 mt-2">
-                                                                    <label>Инфо</label>
-                                                                </div>
-                                                                <div class="col-md-6 mt-2">
-                                                                    <p>{{ user_obj.about }}</p>
-                                                                </div>
-                                                            </div>
-                                                            
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Имя</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>{{ user_obj.name }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Codeforces</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p class = "rank{{ rank }}">
+                                                                {%if user_obj == ''%}
+                                                                    <a href='https://codeforces.com/profile/{{ handleCFORCE }}' class="text-decoration-none rank{{ rank }}">{{ handleCFORCE }}</a>
+                                                                {%else%}
+                                                                    <a href='https://codeforces.com/profile/{{ user_obj.handleCFORCE }}' class="text-decoration-none rank{{ rank }}">{{ user_obj.handleCFORCE }}</a>
+                                                                {%endif%}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Timus</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://acm.timus.ru/author.aspx?id={{ user_obj.handleTIMUS }}' class="text-decoration-none">{{ user_obj.handleTIMUS }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Informatics</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://informatics.mccme.ru/user/view.php?id={{ user_obj.handleINFORM }}' class="text-decoration-none">{{ user_obj.handleINFORM }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>VK</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://vk.com/{{ user_obj.vk_url }}' class="text-decoration-none">{{ user_obj.vk_url }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Инфо</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>{{ user_obj.about }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </div>
                                                 
                                             </div>
@@ -116,8 +161,8 @@
                     
                           
             </div>
-
 <style>
+            
 body{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
 }
