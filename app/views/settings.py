@@ -54,7 +54,7 @@ def settings():
         update.set_params(params)
 
         if password != '' or confirm_password != '':
-            if len(password) < 2:
+            if len(password) < 3 or len(confirm_password) < 3:
                 flash('Пароль слишком короткий', 'danger')
                 return render_template('settings.html')
 

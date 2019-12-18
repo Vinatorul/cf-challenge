@@ -12,4 +12,5 @@ def contest(id):
                                 results = Parsing(id).get_solutions(), 
                                 group_id = group_id)
     except:
-        return redirect(url_for('p404'))
+        pass
+        #return redirect(url_for('p404'))

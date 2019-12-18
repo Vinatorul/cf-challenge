@@ -13,7 +13,7 @@ def profile(login):
         user_obj = Users.query.filter_by(handleCFORCE = login).first()
         return render_template('profile.html', user_obj = user_obj, get_rating = get_rating)
     
-    elif get_rating(login) != None:
+    elif get_rating([login]) != None:
         return render_template('profile.html', user_obj = '', handleCFORCE = login , get_rating = get_rating)
     
     else:

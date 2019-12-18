@@ -12,10 +12,10 @@
 {%block main%}
 
 {%if user_obj == ''%}
-    {% set rank = get_rating(handleCFORCE) %}   
+    {% set rank = get_rating([handleCFORCE]) %}   
 {%else%}
-    {% if user_obj.handleCFORCE != '' and get_rating(user_obj.handleCFORCE) != None %}
-    {% set rank = get_rating(user_obj.handleCFORCE) %}
+    {% if user_obj.handleCFORCE != ''%}
+    {% set rank = get_rating([user_obj.handleCFORCE])[0] %}
         <style>           
             .rank{{ rank }} {
                 {% if rank < 1200 %}

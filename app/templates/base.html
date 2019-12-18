@@ -60,7 +60,7 @@
         }
         @keyframes fadeOut {
            0% {opacity: 1;}
-           100% {opacity: 0; z-index: -100px;}
+           100% {opacity: 0;}
         }
         
         .form-signin {
@@ -79,7 +79,7 @@
 
         body {
           {%if current_user.is_authenticated%}
-            background-image: url({{ url_for('user_font', handle = current_user.handle) }});
+            background-image: url({{ url_for('user_font', login = current_user.login) }});
           {%endif%}
         }
 
@@ -93,7 +93,7 @@
     <!-- Flashed alerts -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div style="position: absolute; top: 0; right: 0;">
+    <div style="position: absolute; top: 55px; right: 0;">
         {% for category, message in messages %}
             <div class="alert alert-{{ category }}" role="alert">
                 {{ message }}
