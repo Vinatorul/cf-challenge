@@ -13,6 +13,9 @@
         <th>#</th>
         <th>Логин</th>
         <th>Имя</th>
+        {% if current_user.role != "User" %} 
+            <th>Настройки</th>
+        {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -22,6 +25,13 @@
             <th scope="row"> {{ loop.index }} </th>
             <td><a href = "profile/{{ user.login }}" class="text-decoration-none rank{{ rank }}">{{ user.login }}</a></td>
             <td>{{user.name}}</td>
+            {% if current_user.role != "User" %} 
+                <td width = "70px">
+                    <div margin = "10px">
+                        <a href = "/deleteUser?id={{user.id}}" title="Удалить"> <img src="https://image.flaticon.com/icons/png/512/32/32178.png", alt = "Удалить" height="20px" width="20px">  </a>
+                    </div>
+                </td>
+            {% endif %}
             </tr>
         {%endfor%}
 
