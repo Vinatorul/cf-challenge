@@ -1,0 +1,27 @@
+{%extends "base.html"%}
+
+{%block title%}
+    <title>Регистрация | ACM Ivanovo</title>
+{%endblock%}
+
+{%block main%}
+<body class="text-center">
+    <form class="mt-5 form-signin" method="POST">
+      <img class="mb-4" src="{{ url_for('static', filename = 'images/defaults/default_icon.jpg') }}" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+
+      <label for="inputName" class="sr-only">Логин</label>
+      <input name = "login" type="name" id="inputEmail" class="form-control" placeholder="Логин" required="" value = "{{ login }}" autofocus="">
+
+      <label for="inputPassword" class="sr-only">Пароль</label>
+      <input name = "password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="">
+
+      <label for="inputPassword" class="sr-only">Подтвердите пароль</label>
+      <input name = "confirm_password" type="password" id="inputPassword" class="form-control" placeholder="Подтвердите пароль" required="">
+      <br>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
+      <p class="mt-2"><a href="/login">Уже есть аккаунт? Войти?</a></p>
+      <p class="mt-2 mb-3 text-muted">© 2019</p>
+    </form>
+</body>
+{%endblock%}

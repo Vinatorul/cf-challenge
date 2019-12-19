@@ -1,0 +1,240 @@
+{%extends "base.html"%}
+
+{%block title%}
+    <title>Настройки | ACM Ivanovo</title>
+{%endblock%}
+
+{%block main%}
+
+<div class="container emp-profile">
+    <form method="POST" enctype=multipart/form-data>
+        <div class="row" mt-5>
+            <div class="col-md-4">
+                
+                <div class="profile-img">
+                    <img class="mb-4"src="{{ url_for('user_icon', login = current_user.login) }}" alt="">
+                    <div class="file btn btn-lg btn-primary">
+                        Изменить фото
+                        <input type=file name="new_icon">
+                    </div>
+
+                    <img class="mb-4"src="{{ url_for('user_font', login = current_user.login) }}" alt="">
+                    <div class="file btn btn-lg btn-primary">
+                        Изменить фото
+                        <input type="file" name="new_font"/>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="col-md-6">
+                <div class="profile-head" align="left">
+                            <h5>
+                                    {{ current_user.login }} ( {{ current_user.name }} )
+                            </h5>
+                            <p class="proile-rating">Статус : </p>
+                            <input name = "status" class="form-control" placeholder="Статус" value = "{{ current_user.status }}"/></p>
+                    
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">О себе</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" role="tab"type="submit">Сохранить изменения</button>
+                        </li>
+                        
+
+                    </ul>
+                    <div class="row mt-5">
+                            <div class="col-md-8">
+                                <div class="tab-content profile-tab" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                       
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Имя</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "name" class="form-control" placeholder="Имя" value = "{{ current_user.name }}"/></p>
+                                            </div>
+                                        </div>
+                                         
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Codeforces</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "handleCFORCE" class="form-control" placeholder="Codeforces" value = "{{ current_user.handleCFORCE }}"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Timus</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "handleTIMUS" class="form-control" placeholder="TimusID" value = "{{ current_user.handleTIMUS }}"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Informatics</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "handleINFORM" class="form-control" placeholder="InformaticsID" value = "{{ current_user.handleINFORM }}"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>VK</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "vk_url" class="form-control" placeholder="VK ID" value = "{{ current_user.vk_url }}"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Инфо</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "about" class="form-control" placeholder="Различная информация" value = "{{ current_user.about }}"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Новый пароль</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "password" type="password" placeholder="Не менее трех знаков"/></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mt-2">
+                                                <label>Подтверждение пароля</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input name = "confirm_password" type="password" placeholder="Не менее трех знаков"/></p>
+                                            </div>
+                                        </div>
+                                                
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                </div>
+                
+            </div>
+           
+        </div>
+    </form>    
+</div>
+
+   
+<style>
+body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.emp-profile{
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+.profile-img{
+    text-align: center;
+}
+.profile-img img{
+    width: 70%;
+    height: 100%;
+}
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+.profile-head h5{
+    color: #333;
+}
+.profile-head h6{
+    color: #0062cc;
+}
+.profile-edit-btn{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+.proile-rating{
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+}
+.proile-rating span{
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile-head .nav-tabs{
+    margin-bottom:5%;
+}
+.profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+}
+.profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #0062cc;
+}
+.profile-work{
+    padding: 14%;
+    margin-top: -15%;
+}
+.profile-work p{
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+.profile-work a{
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+.profile-work ul{
+    list-style: none;
+}
+.profile-tab label{
+    font-weight: 600;
+}
+.profile-tab p{
+    font-weight: 600;
+    color: #0062cc;
+}
+</style>
+{%endblock%}

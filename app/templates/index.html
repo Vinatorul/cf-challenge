@@ -2,18 +2,20 @@
 
 
 {%block title%}
-    <title>ACM Ivanovo|Главная</title>
+    <title>Главная | ACM Ivanovo</title>
 {%endblock%}
 
 {%block add_contest%}
-<form name="contest" method="POST">
-    <input type="text" name="id" placeholder="ID контеста">
-    <input type="submit" value="Добавить контест">
-</form>
+    {% if current_user.is_authenticated %}
+        <form name="contest" method="POST">
+            <input type="text" name="id" placeholder="ID контеста">
+            <input type="submit" value="Добавить контест">
+        </form>
+    {% endif %}
 {%endblock%}
 
 {%block  main%}
-    <table class="table">
+    <table class="centered table table-bordered mt-5" color = "white">
         <thead>
             <tr>
             <th>#</th>
@@ -32,17 +34,5 @@
             
         </tbody>
     </table>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div style="position: absolute; top: 0; right: 0;">
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-{% endwith %}
 
 {%endblock%}

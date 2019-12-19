@@ -17,9 +17,11 @@ class Parsing:
         self.hashed = str(hashlib.sha512(self.hashed).hexdigest())
 
         self.ref = f'https://codeforces.com/api/contest.standings?contestId={self.id}&apiKey={key}&time={self.t}&apiSig={self.rand}{self.hashed}'
-
-        self.response = requests.get(self.ref).json()['result']
-
+        try:
+            self.response = requests.get(self.ref).json()['result']
+        except:
+            return None
+            
     def status(self):
         return requests.get(self.ref).status_code
     
@@ -33,13 +35,18 @@ class Parsing:
             self.problems.append(self.response['problems'][i])
         return self.problems
 
+
     def get_solutions(self):
         
         self.results = []
-
+        self.handles = []
+        
         for i in range(len(self.response['rows'])):
-
-            self.handle = self.response['rows'][i]['party']['members'][0]['handle']
+            self.handles.append(self.response['rows'][i]['party']['members'][0]['handle'])
+   
+        self.last_rating = get_rating(self.handles)
+        
+        for i in range(len(self.response['rows'])):
             self.points = int(self.response['rows'][i]['points'])
             self.penalty = self.response['rows'][i]['penalty']
             self.solutions = {}
@@ -55,6 +62,26 @@ class Parsing:
                 else:
                     self.solutions[j] = [' ', ' '] 
 
+            self.results.append([self.handles[i], self.last_rating[i], self.points, self.penalty, self.solutions])
             
-            self.results.append([self.handle, self.points, self.penalty, self.solutions])
         return self.results
+
+
+def get_rating(handles):
+    print(handles, len(handles))
+    if len(handles) > 1:
+        handles = ";".join(handles)
+    else:
+        handles = handles[0]
+        
+    last_rating = []
+    
+    ref = f'https://codeforces.com/api/user.info?handles={handles}'
+    rating = requests.get(ref).json()
+    for i in range(len(handles)):
+        try:
+            last_rating.append(rating['result'][i]['rating'])
+        except:
+            last_rating.append(0)
+    print(ref)
+    return last_rating

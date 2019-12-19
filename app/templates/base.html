@@ -8,8 +8,10 @@
      
     {%endblock%}
 
-    <title>CF contest info</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -17,27 +19,30 @@
 
   </head>
   
-  <body>
+  <body class="text-center">
 
     <nav id="navbar-example2" class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">Еженедельный челлендж</a>
-      <div class="container">
+      
+      <div float="left">
 
+          <a class="navbar-brand" href="/">Еженедельный челлендж</a>
           <a class="navbar-brand" href="/users">Участники</a>
+          {%if current_user.is_authenticated%}
+          <a class="navbar-brand" href="/profile/{{ current_user.login }}">{{ current_user.login }}</a>
+          {%else%}
+          <a class="navbar-brand" href="/login">Войти</a>
+          {%endif%}
 
-          <div class="row">
-            
-            {%block add_user%}
-
-            {%endblock%}
-            
+      </div>   
+          <div float="right">
+                      
             {%block add_contest%}
 
             {%endblock%}
 
           </div>
           
-      </div>
+      
       
     </nav>
 
@@ -57,7 +62,48 @@
            0% {opacity: 1;}
            100% {opacity: 0;}
         }
+        
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .centered {
+            width: 100%;
+            max-width: 1000px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        body {
+          {%if current_user.is_authenticated%}
+            background-image: url({{ url_for('user_font', login = current_user.login) }});
+          {%endif%}
+        }
+
+        th, td {
+            background-color: #eeeeee;
+        }
+  
      </style>
+     
+
+    <!-- Flashed alerts -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div style="position: absolute; top: 55px; right: 0;">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <!-- Flashed alerts -->
+
 
   </body>
 </html>

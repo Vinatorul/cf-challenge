@@ -1,0 +1,261 @@
+{%extends "base.html"%}
+
+{%block title%}
+    {%if user_obj == ''%}
+        <title>{{ handleCFORCE }} | ACM Ivanovo</title>
+    {%else%}
+        <title>{{ user_obj.login }} | ACM Ivanovo</title>
+    {%endif%}
+    
+{%endblock%}
+
+{%block main%}
+
+{%if user_obj == ''%}
+    {% set rank = get_rating([handleCFORCE]) %}   
+{%else%}
+    {% if user_obj.handleCFORCE != ''%}
+    {% set rank = get_rating([user_obj.handleCFORCE])[0] %}
+        <style>           
+            .rank{{ rank }} {
+                {% if rank < 1200 %}
+                    color: grey !important;
+                {% elif rank < 1400 %}
+                    color: green !important;
+                {% elif rank < 1600 %}
+                    color: #03A89E !important;
+                {% elif rank < 1900 %}
+                    color: blue !important;
+                {% elif rank < 2200 %}
+                    color: #a0a !important;
+                {% elif rank < 2400 %}
+                    color: #FF8C00 !important;
+                {% else %}
+                    color: red !important;
+                {% endif %}
+            }
+        </style>
+    {% else %}
+        <style>
+            .rank{{ rank }} {
+                color: black !important;
+            }
+        </style>
+    {% endif %}
+{%endif%}
+
+    <div class="container emp-profile">
+        
+                    <div class="row" mt-5>
+                        <div class="col-md-4">
+                            <div class="profile-img">
+                                {%if user_obj == ''%}
+                                    <img src="{{ url_for('static', filename = 'images/defaults/anon_icon.jpg') }}" alt="">
+                                {%else%}
+                                    <img src="{{ url_for('user_icon', login = user_obj.login) }}" alt="">
+                                {%endif%}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="profile-head" align="left">
+                                        <h5>
+                                            {%if user_obj == ''%}
+                                                Аноним
+                                            {%else%}
+                                                {{ user_obj.login }} ( {{ user_obj.name }} )
+                                            {%endif%}
+                                        </h5  >
+                                        <p class="proile-rating">Статус : <span>{{ user_obj.status }}</span></p>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">О себе</a>
+                                    </li>
+                                    {%if current_user.login == user_obj.login%}
+                                    <li class="nav-item">
+                                        <a class="nav-link " href='../settings' role="tab">Редактировать профиль</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link " href='../logout' role="tab">Выход</a>
+                                    </li>
+                                    {%endif%}
+                                </ul>
+                                <div class="row mt-5">
+                                        <div class="col-md-8">
+                                            <div class="tab-content profile-tab" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Имя</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>{{ user_obj.name }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Codeforces</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p class = "rank{{ rank }}">
+                                                                {%if user_obj == ''%}
+                                                                    <a href='https://codeforces.com/profile/{{ handleCFORCE }}' class="text-decoration-none rank{{ rank }}">{{ handleCFORCE }}</a>
+                                                                {%else%}
+                                                                    <a href='https://codeforces.com/profile/{{ user_obj.handleCFORCE }}' class="text-decoration-none rank{{ rank }}">{{ user_obj.handleCFORCE }}</a>
+                                                                {%endif%}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Timus</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://acm.timus.ru/author.aspx?id={{ user_obj.handleTIMUS }}' class="text-decoration-none">{{ user_obj.handleTIMUS }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Informatics</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://informatics.mccme.ru/user/view.php?id={{ user_obj.handleINFORM }}' class="text-decoration-none">{{ user_obj.handleINFORM }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>VK</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>
+                                                                <a href='https://vk.com/{{ user_obj.vk_url }}' class="text-decoration-none">{{ user_obj.vk_url }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mt-2">
+                                                            <label>Инфо</label>
+                                                        </div>
+                                                        <div class="col-md-6 mt-2">
+                                                            <p>{{ user_obj.about }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    
+                          
+            </div>
+<style>
+            
+body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.emp-profile{
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+.profile-img{
+    text-align: center;
+}
+.profile-img img{
+    width: 70%;
+    height: 100%;
+}
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+.profile-head h5{
+    color: #333;
+}
+.profile-head h6{
+    color: #0062cc;
+}
+.profile-edit-btn{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+.proile-rating{
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+}
+.proile-rating span{
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile-head .nav-tabs{
+    margin-bottom:5%;
+}
+.profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+}
+.profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #0062cc;
+}
+.profile-work{
+    padding: 14%;
+    margin-top: -15%;
+}
+.profile-work p{
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+.profile-work a{
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+.profile-work ul{
+    list-style: none;
+}
+.profile-tab label{
+    font-weight: 600;
+}
+.profile-tab p{
+    font-weight: 600;
+    color: #0062cc;
+}</style>
+{%endblock%}
