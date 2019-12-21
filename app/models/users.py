@@ -5,6 +5,7 @@ class Users(db.Model, UserMixin):
     __tablename__= 'users'
     id           = db.Column(db.Integer, primary_key = True, autoincrement = True)
     login        = db.Column(db.String(1000), unique = True, nullable = False)
+    role         = db.Column(db.String(50))
     name         = db.Column(db.String(1000))
     handleCFORCE = db.Column(db.String(24)) # Max length of Codeforce's handle = 24 
     handleTIMUS  = db.Column(db.String(50))
@@ -14,8 +15,10 @@ class Users(db.Model, UserMixin):
     vk_url       = db.Column(db.String(100))
     about        = db.Column(db.String(500))
 
-    def __init__(self, login):
+    def __init__(self, login, password, role):
         self.login        = login
+        self.password     = password
+        self.role         = role
         self.name         = ''
         self.handleCFORCE = ''
         self.handleTIMUS  = ''
@@ -26,6 +29,9 @@ class Users(db.Model, UserMixin):
 
     def set_password(self, password):
         self.password = password
+        
+    def set_role(self, role):
+        self.role = role
 
     def set_params(self, kwargs):
         self.name         = kwargs['name']

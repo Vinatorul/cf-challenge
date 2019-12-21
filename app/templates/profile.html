@@ -78,6 +78,17 @@
                                         <a class="nav-link " href='../logout' role="tab">Выход</a>
                                     </li>
                                     {%endif%}
+                                    {% if current_user.role == 'SuperAdmin' and user_obj != '' %}
+                                        {% if user_obj.role == 'User' %}
+                                            <li class="nav-item">
+                                                <a class="nav-link " href='/addAdmin?login={{ user_obj.login }}' role="tab">Назначить администратором</a>
+                                            </li>
+                                        {% elif user_obj.role == 'Admin' %}
+                                            <li class="nav-item">
+                                                <a class="nav-link " href='/deleteAdmin?login={{ user_obj.login }}' role="tab">Разжаловать администратора</a>
+                                            </li>
+                                        {%endif%}    
+                                    {%endif%}
                                 </ul>
                                 <div class="row mt-5">
                                         <div class="col-md-8">

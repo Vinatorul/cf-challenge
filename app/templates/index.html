@@ -6,7 +6,7 @@
 {%endblock%}
 
 {%block add_contest%}
-    {% if current_user.is_authenticated %}
+    {% if current_user.role != "User" %}
         <form name="contest" method="POST">
             <input type="text" name="id" placeholder="ID контеста">
             <input type="submit" value="Добавить контест">
@@ -20,7 +20,9 @@
             <tr>
             <th>#</th>
             <th>Название контеста</th>
-
+            {% if current_user.role != "User" %} 
+                <th>Настройки</th>
+            {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -29,6 +31,13 @@
                 <tr>
                 <th scope="row"> {{ loop.index }} </th>
                 <td><a href = "/contest/{{ contest.id }}"> {{ contest.name }} </a></td>
+                {% if current_user.role != "User" %} 
+                    <td width = "100px">
+                        <div margin = "10px">
+                            <a href = "/deleteContest?id={{ contest.id }}" title="Удалить"> <img src="https://image.flaticon.com/icons/png/512/32/32178.png", alt = "Удалить" height="20px" width="20px">  </a>
+                        </div>
+                    </td>
+                {% endif %}
                 </tr>
             {%endfor%}
             

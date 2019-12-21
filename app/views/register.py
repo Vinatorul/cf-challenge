@@ -33,9 +33,8 @@ def register():
                 flash('Пароли не совпадают', 'danger')
             
             else:
-                new_user = Users(login)
                 password = hashlib.sha224(password.encode('utf-8')).hexdigest()
-                new_user.set_password(password)
+                new_user = Users(login, password, "User")
                 db.session.add(new_user)
                 db.session.commit()
                 
